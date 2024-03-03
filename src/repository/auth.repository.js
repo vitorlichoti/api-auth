@@ -1,10 +1,42 @@
+const { PrismaClient } = require('@prisma/client')
+
+const prisma = new PrismaClient()
+
 class AuthRepository {
-  async register(email, password) {
-    // ... implementation
+  async register(username, password, name, email, avatar_url) {
+
+    const user = await prisma.user.create({
+      data: {
+        username,
+        password,
+        name,
+        email,
+        avatar_url
+      }
+    })
+
+    return user;
+
   }
 
-  async login(email, password) {
-    // ... implementation
+  async login(username, password) {
+    const user = await prisma.user.findFirst({
+      where: {
+        username
+      }
+    })
+
+    return user;
+  }
+
+  async getUserByUsername(username) {
+    const user = await prisma.user.findFirst({
+      where: {
+        username
+      }
+    })
+
+    return user;
   }
 }
 

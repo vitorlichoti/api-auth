@@ -13,7 +13,7 @@ authRouter.get('/api/auth/validate', authController.validateToken);
 authRouter.get('/api/auth/ping', (req, res) => res.status(200).send('pong'));
 
 // POST /api/auth/register -> register a new user
-authRouter.post('/api/auth/register', FieldsAuthChecker.checkFieldsFromRegister, authController.register);
+authRouter.post('/api/auth/register', FieldsAuthChecker.checkFieldsFromRegister, FieldsAuthChecker.checkIfUserNameExists, authController.register);
 
 // POST /api/auth/login -> login
 authRouter.post('/api/auth/login', authController.login);

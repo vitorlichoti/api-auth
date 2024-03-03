@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
+const AuthRepository = require('../repository/auth.repository');
 
-const uid = require('uuid');
 const verifyToken = require('./helper/verifyToken');
-
+const bcrypt = require('bcrypt');
 
 class AuthService {
   async register(registerFields) {
@@ -14,22 +14,31 @@ class AuthService {
       avatar_url,
     } = registerFields;
 
-    const addUser = {
-      username,
-      password,
-      name,
-      email,
-      avatar_url,
-    };
+    const saltRounds = 10;
 
-    return { id: uid.v4(), new_user: addUser };
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const authRepository = new AuthRepository();
+
+    const addUser = await authRepository.register(username, hashedPassword, name, email, avatar_url);
+
+    return { code: 201, message: addUser };
   }
 
   async login(username, password) {
+    const authRepository = new AuthRepository();
 
     const expiration = Date.now() + 1000 * 60 * 60; // 1hr
 
-    const token = jwt.sign({ data: { username, password }, exp: expiration }, process.env.JWT_SECRET);
+    const user = await authRepository.login(username, password);
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return { code: 401, message: 'Invalid credentials' };
+    }
+
+    const token = jwt.sign({ data: { username }, exp: expiration }, process.env.JWT_SECRET);
 
     return { token };
   }
@@ -44,7 +53,6 @@ class AuthService {
 
       return { code: 200, message: decoded };
     } catch (error) {
-      console.log('47', error.message);
       return { code: 401, message: 'Invalid token' };
     }
   }

@@ -1,3 +1,5 @@
+const AuthRepository = require('../repository/auth.repository');
+
 class FieldsAuthChecker {
 
   static checkFieldsFromLogin(req, res, next) {
@@ -23,6 +25,19 @@ class FieldsAuthChecker {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
 
+    next();
+  }
+
+  static checkIfUserNameExists(req, res, next) {
+    const { username } = req.body;
+
+    const authRepository = new AuthRepository();
+
+    const user = authRepository.getUserByUsername(username);
+
+    if (!user) {
+      return res.status(400).json({ message: 'Username must be filled' });
+    }
     next();
   }
 }
