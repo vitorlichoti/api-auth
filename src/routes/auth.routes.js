@@ -15,4 +15,7 @@ authRouter.post('/api/auth/register', FieldsAuthChecker.checkFieldsFromRegister,
 // POST /api/auth/login -> login
 authRouter.post('/api/auth/login', authController.login);
 
+// POST /api/auth/ping -> route to test if the server is running
+authRouter.post('/api/auth/ping', (req, res) => res.status(200).send('pong'));
+
 module.exports = authRouter;
