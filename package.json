@@ -18,7 +18,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "build": "npx prisma db push && npx prisma generate && next build"
+    "build": "npx prisma generate"
   },
   "devDependencies": {
     "jest": "26.0.1",
