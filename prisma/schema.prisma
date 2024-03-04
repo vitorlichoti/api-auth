@@ -37,7 +37,7 @@ model Phone {
 model Detail {
   id        String   @id @default(uuid())
   phoneId   String
-  phone     Phone    @relation(fields: [phoneId], references: [id])
+  phone     Phone    @relation(fields: [phoneId], references: [id], onDelete: Cascade)
   color     String
   price     Float
   createdAt DateTime @default(now())
