@@ -10,8 +10,8 @@ const options = {
     },
     servers: [
       {
+        url: 'https://api-auth-pi.vercel.app',
         url: 'http://localhost:3000',
-        url: 'https://api-auth-pi.vercel.app/api/auth',
       },
     ],
   },
