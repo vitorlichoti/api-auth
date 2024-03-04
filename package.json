@@ -14,7 +14,8 @@
     "express": "4.18.3",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^5.10.2",
-    "swagger-jsdoc": "^6.2.8"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "5.0.0"
   },
   "main": "src/server.js",
   "scripts": {
