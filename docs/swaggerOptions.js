@@ -11,6 +11,7 @@ const options = {
     servers: [
       {
         url: 'https://api-auth-pi.vercel.app',
+        description: "My API Documentation",
         url: 'http://localhost:3000',
       },
     ],
