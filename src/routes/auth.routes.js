@@ -93,6 +93,6 @@ authRouter.post('/api/auth/register', FieldsAuthChecker.checkFieldsFromRegister,
  *       401:
  *         description: User unauthorized.
  */
-authRouter.post('/api/auth/login', authController.login);
+authRouter.post('/api/auth/login', FieldsAuthChecker.checkFieldsFromLogin, authController.login);
 
 module.exports = authRouter;

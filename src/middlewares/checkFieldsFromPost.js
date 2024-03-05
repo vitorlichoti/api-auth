@@ -3,11 +3,12 @@ const AuthRepository = require('../repository/auth.repository');
 class FieldsAuthChecker {
 
   static checkFieldsFromLogin(req, res, next) {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { username, password } = req.body;
+    if (!username || !password) {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
-    next();
+
+    return next();
   }
 
   static checkFieldsFromRegister(req, res, next) {
@@ -25,7 +26,7 @@ class FieldsAuthChecker {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
 
-    next();
+    return next();
   }
 
   static checkIfUserNameExists(req, res, next) {
@@ -38,7 +39,7 @@ class FieldsAuthChecker {
     if (!user) {
       return res.status(400).json({ message: 'Username must be filled' });
     }
-    next();
+    return next();
   }
 }
 

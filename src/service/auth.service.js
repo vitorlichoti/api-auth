@@ -30,15 +30,23 @@ class AuthService {
 
     const expiration = Date.now() + 1000 * 60 * 60; // 1hr
 
-    const user = await authRepository.login(username, password);
+    // Consulta o usuário pelo nome de usuário
+    const user = await authRepository.getUserByUsername(username);
 
+    // Verifica se o usuário existe
+    if (!user) {
+      return { code: 401, message: 'Invalid credentials' };
+    }
+
+    // Compara a senha fornecida com a senha armazenada criptografada
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return { code: 401, message: 'Invalid credentials' };
     }
 
-    const token = jwt.sign({ data: { username }, exp: expiration }, process.env.JWT_SECRET);
+    // Gera o token de autenticação
+    const token = jwt.sign({ data: { username } }, process.env.JWT_SECRET, { expiresIn: expiration });
 
     return { token };
   }
