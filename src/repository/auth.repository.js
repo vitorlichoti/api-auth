@@ -19,7 +19,6 @@ class AuthRepository {
   }
 
   async login(username, password) {
-    console.log(username, password);
     const user = await prisma.user.findFirst({
       where: {
         username,
@@ -34,6 +33,23 @@ class AuthRepository {
     const user = await prisma.user.findFirst({
       where: {
         username
+      }
+    })
+
+    return user;
+  }
+
+  async getUserByUsernameAndEmail(username, email) {
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            username
+          },
+          {
+            email
+          }
+        ]
       }
     })
 

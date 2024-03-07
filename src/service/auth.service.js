@@ -48,7 +48,7 @@ class AuthService {
     // Gera o token de autenticação
     const token = jwt.sign({ data: { username } }, process.env.JWT_SECRET, { expiresIn: expiration });
 
-    return { token };
+    return { token, user: { username: user.username, name: user.name, email: user.email, avatar_url: user.avatar_url } };
   }
 
   async validateToken(token) {

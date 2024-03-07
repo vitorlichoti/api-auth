@@ -29,16 +29,27 @@ class FieldsAuthChecker {
     return next();
   }
 
-  static checkIfUserNameExists(req, res, next) {
-    const { username } = req.body;
+  static async checkIfUserNameExists(req, res, next) {
+    const { username, email } = req.body;
 
     const authRepository = new AuthRepository();
 
-    const user = authRepository.getUserByUsername(username);
+    const user = await authRepository.getUserByUsernameAndEmail(username, email);
 
-    if (!user) {
-      return res.status(400).json({ message: 'Username must be filled' });
+    if (user) {
+      if (user.username === username && user.email === email) {
+        return res.status(400).json({ message: 'Username and email already exists' });
+      }
+
+      if (user.username === username) {
+        return res.status(400).json({ message: 'Username already exists' });
+      }
+
+      if (user.email === email) {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
     }
+
     return next();
   }
 }

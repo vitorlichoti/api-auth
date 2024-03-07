@@ -5,8 +5,9 @@ dotenv.config();
 
 async function verifyToken(token) {
   try {
-    const decodedToken = jwt.decode(token);
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    const tokenParsed = JSON.parse(token);
+    const decodedToken = jwt.decode(tokenParsed);
+    const verified = jwt.verify(tokenParsed, process.env.JWT_SECRET);
 
     const { exp, iat, nbf } = decodedToken;
 
@@ -24,7 +25,6 @@ async function verifyToken(token) {
 
     return verified;
   } catch (error) {
-    console.error('27', error.message);
     return error.message;
   }
 }
